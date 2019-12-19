@@ -168,6 +168,9 @@ def bb_intersection_over_union(self, boxA, boxB):
                         discard.add(j)
 
             keep = [i for i in range(len(boxes)) if i not in discard]
+            for i in discard:
+               feats[i] = 0
+               boxes[i] = 0
             obj_num = len(keep)
             feats = feats[keep]
             boxes = boxes[keep]
