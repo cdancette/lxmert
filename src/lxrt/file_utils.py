@@ -174,6 +174,7 @@ def get_from_cache(url, cache_dir=None):
     Given a URL, look for the corresponding dataset in the local cache.
     If it's not there, download it. Then return the path to the cached file.
     """
+    print(cache_dir)
     if cache_dir is None:
         cache_dir = PYTORCH_PRETRAINED_BERT_CACHE
     if sys.version_info[0] == 3 and isinstance(cache_dir, Path):
@@ -183,15 +184,16 @@ def get_from_cache(url, cache_dir=None):
         os.makedirs(cache_dir)
 
     # Get eTag to add to filename, if it exists.
-    if url.startswith("s3://"):
-        etag = s3_etag(url)
-    else:
-        response = requests.head(url, allow_redirects=True)
-        if response.status_code != 200:
-            raise IOError("HEAD request failed for url {} with status code {}"
-                          .format(url, response.status_code))
-        etag = response.headers.get("ETag")
+    # if url.startswith("s3://"):
+    #     etag = s3_etag(url)
+    # else:
+    #     response = requests.head(url, allow_redirects=True)
+    #     if response.status_code != 200:
+    #         raise IOError("HEAD request failed for url {} with status code {}"
+    #                       .format(url, response.status_code))
+    #     etag = response.headers.get("ETag")
 
+    etag = None
     filename = url_to_filename(url, etag)
 
     # get cache path to put the file
